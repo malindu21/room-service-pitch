@@ -210,21 +210,39 @@
   }
   html:not(.js) .step { opacity: 1; }
 
-  /* ---------- Before / after */
-  .compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border: 2px solid var(--ink); }
-  .col-box { padding: clamp(24px, 3.5vw, 44px); min-width: 0; }
-  .col-box h3 { font-size: 32px; margin-bottom: 20px; }
-  .col-before { background: var(--white); border-right: 2px solid var(--ink); }
-  .col-after { background: var(--forest); color: var(--white); }
-  .col-box ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-  .col-box li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; font-size: 19px; align-items: start; }
-  .col-box li::before { font-weight: 800; display: grid; place-items: center; width: 28px; height: 28px; margin-top: 2px; }
-  .col-before li::before { content: "✕"; background: var(--bad); color: var(--white); }
-  .col-after li::before { content: "✓"; background: var(--sun); color: var(--ink); }
-  @media (max-width: 760px) {
-    .compare { grid-template-columns: minmax(0, 1fr); }
-    .col-before { border-right: 0; border-bottom: 2px solid var(--ink); }
+  /* ---------- Before / after, row by row */
+  .vs { border: 2px solid var(--ink); background: var(--white); }
+  .vs-head, .vs-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vs-head { display: block; padding: 18px clamp(18px, 3vw, 32px); font-family: var(--display); font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; border-bottom: 2px solid var(--ink); }
+  .vs-head-before { background: var(--paper); border-right: 2px solid var(--ink); }
+  .vs-head-after { background: var(--forest); color: var(--white); }
+  .vs-row { grid-column: 1 / -1; border-bottom: 1px solid var(--line); }
+  .vs-row:last-child { border-bottom: 0; }
+  .vs-row p {
+    display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start;
+    padding: 18px clamp(18px, 3vw, 32px); font-size: 18px; min-width: 0;
   }
+  .vs-row p::before { font-weight: 800; display: grid; place-items: center; width: 28px; height: 28px; margin-top: 1px; }
+  .vs-before { color: var(--muted); border-right: 2px solid var(--ink); }
+  .vs-before::before { content: "✕"; background: var(--bad); color: var(--white); }
+  .vs-after { font-weight: 700; background: #eef5f0; }
+  .vs-after::before { content: "✓"; background: var(--sun); color: var(--ink); }
+  @media (max-width: 760px) {
+    .vs { grid-template-columns: minmax(0, 1fr); }
+    .vs-head-before, .vs-head-after { display: none; }
+    .vs-row { grid-template-columns: minmax(0, 1fr); border-bottom: 2px solid var(--ink); }
+    .vs-before { border-right: 0; border-bottom: 1px dashed var(--line); }
+  }
+
+  .punch {
+    margin-top: clamp(28px, 4vw, 44px); background: var(--ink); color: var(--white);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 28px;
+    padding: clamp(22px, 3.2vw, 36px) clamp(22px, 3.2vw, 40px); box-shadow: 10px 10px 0 var(--sun);
+  }
+  .punch-line { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3vw, 36px); line-height: 1.15; max-width: 24ch; }
+  html[lang="si"] .punch-line { line-height: 1.4; font-size: clamp(21px, 2.5vw, 30px); }
+  .punch-btn { padding: 15px 22px; font-size: 17px; }
 
   /* ---------- Setup */
   .setup-sec { background: var(--paper); }
@@ -443,31 +461,47 @@
     </div>
   </section>
 
-  <section class="sec" id="why">
+  <section class="sec why" id="why">
     <div class="wrap">
       <div class="sec-head" data-reveal>
-        <span class="label" data-i18n="whyLabel">Why it is better</span>
-        <h2 data-i18n="whyTitle">Today, and with QR ordering.</h2>
+        <span class="label" data-i18n="whyLabel">Why owners switch</span>
+        <h2 data-i18n="whyTitle">Paper menus and phone orders are quietly costing you sales.</h2>
+        <p data-i18n="whySub">When ordering is a hassle, guests order less, or not at all. Make it effortless, and they order more.</p>
       </div>
-      <div class="compare" data-reveal>
-        <div class="col-box col-before">
-          <h3 data-i18n="today">Today</h3>
-          <ul>
-            <li data-i18n="b1">Guests call or message reception to order</li>
-            <li data-i18n="b2">Room numbers and dishes get misheard</li>
-            <li data-i18n="b3">Staff write every order down by hand</li>
-            <li data-i18n="b4">Guests call again to ask where their food is</li>
-          </ul>
+
+      <div class="vs" data-reveal>
+        <div class="vs-head vs-head-before" data-i18n="today">With paper menu cards</div>
+        <div class="vs-head vs-head-after" data-i18n="withQr">With QR ordering</div>
+
+        <div class="vs-row">
+          <p class="vs-before" data-i18n="b1">No photos. Guests play it safe and order what they already know.</p>
+          <p class="vs-after" data-i18n="a1">Every dish has a photo, so guests order what looks good, not just what they know.</p>
         </div>
-        <div class="col-box col-after">
-          <h3 data-i18n="withQr">With QR ordering</h3>
-          <ul>
-            <li data-i18n="a1">Guests order from their room in about a minute</li>
-            <li data-i18n="a2">The room number is always correct</li>
-            <li data-i18n="a3">Every order arrives complete, with notes</li>
-            <li data-i18n="a4">Guests can see the progress, so fewer calls</li>
-          </ul>
+        <div class="vs-row">
+          <p class="vs-before" data-i18n="b2">Drinks and desserts are buried on the back page.</p>
+          <p class="vs-after" data-i18n="a2">Drinks and desserts are one tap away, so every order gets bigger.</p>
         </div>
+        <div class="vs-row">
+          <p class="vs-before" data-i18n="b3">Guests must call reception. Many simply don't bother, especially late at night.</p>
+          <p class="vs-after" data-i18n="a3">No phone call needed, so guests order more often, at any hour.</p>
+        </div>
+        <div class="vs-row">
+          <p class="vs-before" data-i18n="b4">Foreign guests struggle to order over the phone.</p>
+          <p class="vs-after" data-i18n="a4">Foreign guests just point and tap. No language barrier.</p>
+        </div>
+        <div class="vs-row">
+          <p class="vs-before" data-i18n="b5">Misheard orders mean wrong dishes, wasted food and unhappy reviews.</p>
+          <p class="vs-after" data-i18n="a5">The right dish to the right room, every time. Fewer complaints, better reviews.</p>
+        </div>
+        <div class="vs-row">
+          <p class="vs-before" data-i18n="b6">Every price change means reprinting the menu cards.</p>
+          <p class="vs-after" data-i18n="a6">Change a price or hide a sold-out dish in seconds. Nothing to reprint.</p>
+        </div>
+      </div>
+
+      <div class="punch" data-reveal>
+        <p class="punch-line" data-i18n="punch">Your menu becomes a salesperson in every room, 24 hours a day.</p>
+        <a class="btn btn-sun punch-btn" href="#contact" data-i18n="punchCta">Start selling more: call me →</a>
       </div>
     </div>
   </section>
@@ -546,17 +580,24 @@
       s5p: 'භාරගත්තා, සකසමින්, සූදානම්. “මගේ කෑම එනවද?” කියා පිළිගැනීමේ කවුළුවට තවත් ඇමතුම් නැහැ.',
       s6t: 'කෑම කාමරයටම ගෙනත් දෙනවා',
       s6p: 'සෑම ඇණවුමක්ම නිවැරදි කෑම සමඟ, නිවැරදි කාමරයටම සම්පූර්ණයෙන් ලැබෙනවා.',
-      whyLabel: 'වඩා හොඳ ඇයි',
-      whyTitle: 'අද තත්ත්වය සහ QR ඇණවුම් සමඟ.',
-      today: 'අද', withQr: 'QR ඇණවුම් සමඟ',
-      b1: 'ඇණවුම් කිරීමට අමුත්තන් පිළිගැනීමේ කවුළුවට අමතනවා හෝ පණිවිඩ යවනවා',
-      b2: 'කාමර අංක සහ කෑම වැරදියට ඇසෙනවා',
-      b3: 'කාර්ය මණ්ඩලය සෑම ඇණවුමක්ම අතින් ලියනවා',
-      b4: 'කෑම කොහෙද කියා අහන්න අමුත්තන් නැවත අමතනවා',
-      a1: 'අමුත්තන් විනාඩියක් පමණ කාලයකින් කාමරයේ සිටම ඇණවුම් කරනවා',
-      a2: 'කාමර අංකය සැමවිටම නිවැරදියි',
-      a3: 'සෑම ඇණවුමක්ම සටහන් සමඟ සම්පූර්ණයෙන් ලැබෙනවා',
-      a4: 'ප්‍රගතිය අමුත්තන්ට පෙනෙන නිසා ඇමතුම් අඩුයි',
+      whyLabel: 'අයිතිකරුවන් මාරු වන්නේ ඇයි',
+      whyTitle: 'කඩදාසි මෙනු සහ දුරකථන ඇණවුම් නිසා ඔබට නොදැනීම විකුණුම් අහිමි වෙනවා.',
+      whySub: 'ඇණවුම් කිරීම කරදරයක් නම් අමුත්තන් අඩුවෙන් ඇණවුම් කරනවා, නැත්නම් කිසිසේත් නොකරයි. එය පහසු කළොත් ඔවුන් වැඩිපුර ඇණවුම් කරනවා.',
+      today: 'කඩදාසි මෙනු කාඩ්පත් සමඟ', withQr: 'QR ඇණවුම් සමඟ',
+      b1: 'ඡායාරූප නැහැ. අමුත්තන් අවදානම් නොගෙන දන්න දේම ඇණවුම් කරනවා.',
+      a1: 'සෑම කෑමකටම ඡායාරූපයක් ඇති නිසා, අමුත්තන් දන්න දේ නොව හොඳ පෙනෙන දේ ඇණවුම් කරනවා.',
+      b2: 'බීම සහ අතුරුපස මෙනුවේ පිටුපස පිටුවේ සැඟවී තිබෙනවා.',
+      a2: 'බීම සහ අතුරුපස එක් ස්පර්ශයකින්. ඒ නිසා සෑම ඇණවුමක්ම විශාල වෙනවා.',
+      b3: 'අමුත්තන් පිළිගැනීමේ කවුළුවට ඇමතිය යුතුයි. බොහෝ දෙනා, විශේෂයෙන් රාත්‍රියේ, එහෙම කරන්නේ නැහැ.',
+      a3: 'ඇමතුමක් අවශ්‍ය නැති නිසා, අමුත්තන් ඕනෑම වේලාවක වැඩි වාර ගණනක් ඇණවුම් කරනවා.',
+      b4: 'විදේශීය අමුත්තන්ට දුරකථනයෙන් ඇණවුම් කිරීම අපහසුයි.',
+      a4: 'විදේශීය අමුත්තන්ට තෝරා ස්පර්ශ කිරීම පමණයි. භාෂා බාධක නැහැ.',
+      b5: 'වැරදියට ඇසුණු ඇණවුම් නිසා වැරදි කෑම, නාස්ති වූ ආහාර සහ අසතුටුදායක සමාලෝචන.',
+      a5: 'නිවැරදි කෑම, නිවැරදි කාමරයට, සෑම විටම. පැමිණිලි අඩුයි, සමාලෝචන හොඳයි.',
+      b6: 'සෑම මිල වෙනසකටම මෙනු කාඩ්පත් නැවත මුද්‍රණය කළ යුතුයි.',
+      a6: 'මිලක් වෙනස් කරන්න හෝ අවසන් වූ කෑමක් තත්පර කිහිපයකින් සඟවන්න. නැවත මුද්‍රණය කිරීමට කිසිවක් නැහැ.',
+      punch: 'ඔබේ මෙනුව සෑම කාමරයකම, දවසේ පැය 24 පුරාම විකුණුම්කරුවෙක් බවට පත් වෙනවා.',
+      punchCta: 'වැඩිපුර විකුණන්න පටන් ගන්න: මට අමතන්න →',
       setupLabel: 'ඔබ කළ යුත්තේ',
       setupTitle: 'කිසිවක් වගේ නැහැ. සියල්ල මම සකස් කරනවා.',
       u1: 'ඔබේ මෙනුව සහ මිල ගණන් මට එවන්න', u1s: 'මුද්‍රිත මෙනුවේ ඡායාරූපයක් ඇති.',
